@@ -3,6 +3,9 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import authentication from './modules/authentication'
+import chat from './modules/chat'
+
 export const store = new Vuex.Store({
   state: {
     seeLogo: false,
@@ -27,11 +30,9 @@ export const store = new Vuex.Store({
 
   },
   modules: {
-    counter,
-    thankTee,
-    comingSoon,
-    infoAlert,
-    underTheHood
+    // Place to add modularized store items
+    authentication,
+    chat
   }
 
 });
