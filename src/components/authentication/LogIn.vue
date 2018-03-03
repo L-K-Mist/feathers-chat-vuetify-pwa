@@ -2,9 +2,27 @@
   <v-container>
       <v-layout row wrap>
           <v-flex align-content-center>
-              <v-card >
-                <h3>Login Form</h3>    
-              </v-card>
+
+                <h3>Log In</h3>
+                <v-form v-model="valid"
+                    @submit.prevent="onSignup">
+                    <v-text-field
+                    label="E-mail"
+                    v-model="email"
+                    :rules="emailRules"
+                    required
+                    ></v-text-field>
+                    <v-text-field
+                    label="Password"
+                    v-model="password"
+                    :rules="emailRules"
+                    required
+                    ></v-text-field>
+                    <v-btn color='primary' type="submit">
+                      Log In
+                    </v-btn>
+                </v-form>
+
           </v-flex>
       </v-layout>
   </v-container>
@@ -13,9 +31,21 @@
 <script>
 export default {
   data() {
-    return {};
-  },
-  methods: {},
-  components: {}
+    return {
+      valid: false,
+      email: "",
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v =>
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail must be valid"
+      ],
+      password: "",
+      passwordRules: [
+        v => !!v || "Password is required",
+        v => v.length >= 6 || "Password must be at least 6 characters"
+      ]
+    };
+  }
 };
 </script>
