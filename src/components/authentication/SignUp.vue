@@ -21,7 +21,7 @@
                     <v-text-field
                     label="Password"
                     v-model="password"
-                    :rules="emailRules"
+                    :rules="passwordRules"
                     required
                     ></v-text-field>
                     <v-btn color="primary" type="submit">
@@ -56,8 +56,19 @@ export default {
       v => v.length >= 6 || "Password must be at least 6 characters"
     ]
   }),
+  computed: {
+    user() {
+      return {
+        name: this.name,
+        email: this.email,
+        password: this.password
+      };
+    }
+  },
   methods: {
-    onSignup() {}
+    onSignup() {
+      this.$store.dispatch("createUser", this.user);
+    }
   }
 };
 </script>
