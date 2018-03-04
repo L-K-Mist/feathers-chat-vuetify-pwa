@@ -14,9 +14,17 @@ const feathers = Feathers()
     storage: window.localStorage
   }))
 
-// feathers.service('messages').create({
-//   text: 'A new message'
-// })
+var createAccount = (email, password) => {
+  const userData = {
+    email,
+    password
+  };
+  return feathers.service('users').create(userData)
+}
+
+createAccount('d@bb.com', 'welink')
+console.log(createAccount)
+
 
 // Standard Vue with Vuetify stuff
 import Vue from 'vue'
