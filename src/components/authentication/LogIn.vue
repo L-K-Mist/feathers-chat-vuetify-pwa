@@ -5,7 +5,7 @@
 
                 <h3>Log In</h3>
                 <v-form v-model="valid"
-                    @submit.prevent="onSignup">
+                    @submit.prevent="onLogin">
                     <v-text-field
                     label="E-mail"
                     v-model="email"
@@ -31,6 +31,7 @@
 <script>
 export default {
   data() {
+    // Notice LogIn.vue uses a different style here. I prefer this style but just showing for reference
     return {
       valid: false,
       email: "",
@@ -46,6 +47,9 @@ export default {
         v => v.length >= 6 || "Password must be at least 6 characters"
       ]
     };
+  },
+  methods: {
+    onLogin() {}
   }
 };
 </script>

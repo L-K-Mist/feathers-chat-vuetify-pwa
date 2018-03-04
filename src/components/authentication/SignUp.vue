@@ -3,7 +3,8 @@
       <v-layout row wrap>
           <v-flex align-content-center>
                 <h3>Sign Up</h3>
-                <v-form v-model="valid">
+                <v-form v-model="valid"
+                     @submit.prevent="onSignup">
                     <v-text-field
                     label="Name"
                     v-model="name"
@@ -23,11 +24,10 @@
                     :rules="emailRules"
                     required
                     ></v-text-field>
-                    <v-btn color='primary' type="submit">
+                    <v-btn color="primary" type="submit">
                       Sign Up
                     </v-btn>
                 </v-form>    
-
           </v-flex>
       </v-layout>
   </v-container>
@@ -36,6 +36,7 @@
 <script>
 export default {
   data: () => ({
+    // Notice SignUp.vue uses a different style here
     valid: false,
     name: "",
     nameRules: [
@@ -54,6 +55,9 @@ export default {
       v => !!v || "Password is required",
       v => v.length >= 6 || "Password must be at least 6 characters"
     ]
-  })
+  }),
+  methods: {
+    onSignup() {}
+  }
 };
 </script>
