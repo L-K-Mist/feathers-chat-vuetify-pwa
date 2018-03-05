@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-content>
+      <h3 v-if="showWelcome">Hello {{ user.name }}, welcome back</h3>
       <router-view/>
     </v-content>
     <v-footer :fixed="fixed" app>
@@ -10,14 +11,31 @@
 </template>
 
 <script>
-import store from "./store/store";
-
 export default {
+  name: "App",
+  mounted() {
+    this.$store.dispatch("signInAuto");
+  },
   data() {
     return {
-      fixed: false
+      fixed: false,
+      showWelcome: false,
+      username: undefined
     };
   },
-  name: "App"
+  computed: {
+    user() {
+      return this.$store.getters.getUser;
+    }
+  },
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        this.showWelcome = true;
+        //const _user = this.$store.getters.user;
+        //this.username = _user.name;
+      }
+    }
+  }
 };
 </script>
