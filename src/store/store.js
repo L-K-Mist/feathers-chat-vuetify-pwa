@@ -147,7 +147,8 @@ export const store = new Vuex.Store({
           }
         }
       })
-    }
+    },
+    // TODO add messages actions
   },
   modules: {
     // Place to add modularized store items
