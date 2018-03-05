@@ -25,7 +25,13 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    user: {},
+    user: null,
+    isAuthenticated: false,
+    isConnecting: false,
+    user: null,
+    messages: [],
+    hasMoreMessages: false,
+    //skip = 0,
   },
   getters: {
     getUser: state => {
@@ -36,8 +42,13 @@ export const store = new Vuex.Store({
   },
   mutations: {
     setUser: (state, payload) => {
-      state.setUser = payload;
+      state.user = payload
+    },
+    setIsAuthenticated: (state, payload) => {
+      state.isAuthenticated = payload
+      console.log('setIsAuthenticated', state.isAuthenticated)
     }
+
   },
   actions: {
     // 
@@ -54,7 +65,7 @@ export const store = new Vuex.Store({
         const verifyNewUser = await feathers.passport.verifyJWT(authNewUser.accessToken)
         //const fetchUserId = await feathers.service('users').get(verifyNewUser.id)
         console.log('New User: ', newUser)
-        commit('setUser', payload);
+        commit('setUser', newUser);
 
       } catch (error) {
         console.log(error)
@@ -70,9 +81,10 @@ export const store = new Vuex.Store({
           password: payload.password
         })
         const verifyExistingUser = await feathers.passport.verifyJWT(authExistingUser.accessToken)
-        //const fetchUserId = await feathers.service('users').get(verifyNewUser.id)
-        console.log('verifyExistingUser: ', verifyExistingUser)
-        commit('setUser', payload);
+        const fetchUser = await feathers.service('users').get(verifyExistingUser.userId)
+        console.log('verifyExistingUser: ', fetchUser)
+        commit('setUser', fetchUser);
+        commit('setIsAuthenticated', true)
       } catch (error) {
         console.log(error)
       }
@@ -83,9 +95,11 @@ export const store = new Vuex.Store({
       try {
         const authExistingUser = await feathers.authenticate()
         const verifyExistingUser = await feathers.passport.verifyJWT(authExistingUser.accessToken)
-        //const fetchUserId = await feathers.service('users').get(verifyNewUser.id)
-        console.log('verifyExistingUser: ', verifyExistingUser)
-        commit('setUser', payload);
+        const fetchUser = await feathers.service('users').get(verifyExistingUser.userId)
+        console.log('verifyExistingUser: ', verifyExistingUser.userId)
+        console.log('current user: ', fetchUser)
+        commit('setUser', fetchUser)
+        commit('setIsAuthenticated', true)
       } catch (error) {
         console.log(error)
 
