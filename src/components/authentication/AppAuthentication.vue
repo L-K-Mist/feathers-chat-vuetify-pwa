@@ -1,14 +1,28 @@
 <template>
   <v-container>
-      <v-layout row wrap>
-          <v-flex xs6 offset-xs3 justify-center>
+      <v-layout>
+          <v-flex xs12 sm6  offset-sm3 justify-center>
               <v-card >
                 <h3>Authentication Component Wrapper</h3>
                 <!-- 3) PLACE the registered component into the template
                 notice: CamelCase becomes hyphenated-component -->
                 <log-in/>
-                <sign-up/>   
+                <sign-up/> 
               </v-card>
+              <v-layout row>
+                <v-btn color="purple"
+                  @click.prevent="logOut">
+                  Log Out
+                </v-btn>  
+                <v-btn color="purple"
+                  @click.prevent="logUsers">
+                  Log Users
+                </v-btn>
+                 <v-btn color="red"
+                  @click.prevent="cleanUsers">
+                  Flush Users
+                </v-btn>  
+              </v-layout>
           </v-flex>
       </v-layout>
   </v-container>
@@ -23,7 +37,17 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    logOut() {
+      this.$store.dispatch("logOut");
+    },
+    logUsers() {
+      this.$store.dispatch("logUsers");
+    },
+    cleanUsers() {
+      this.$store.dispatch("cleanUsers");
+    }
+  },
   components: {
     LogIn, // 2) REGISTER the Component
     SignUp

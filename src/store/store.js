@@ -105,7 +105,16 @@ export const store = new Vuex.Store({
 
       }
     },
-
+    async logOut({
+      commit
+    }) {
+      try {
+        const logout = await feathers.logout()
+        console.log('logout ', logout)
+      } catch (error) {
+        console.log(error)
+      }
+    },
     // To just console log our users for now
     logUsers({
       commit
@@ -113,22 +122,28 @@ export const store = new Vuex.Store({
       //	Find	the	10	newest user accounts
       feathers.service('users').find({
         query: {
-          $limit: 10,
+          $limit: 50,
           $sort: {
-            createdAt: -1
-          }
+            name: -1
+          },
+          // name: { // Just getting the log to exclude myself before cleaning up and deleting all except myself
+          //   $nin: ['dylan']
+          // }
         }
-      }).then(users => console.log(users));
+      }).then(users => console.log(users.data));
       // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
     },
     cleanUsers({
       commit
     }) {
-      feathers.service('users').remove(null, {
+      feathers.service('users').remove(null, { // DANGEROUS ACTION: Deletes users from db
         query: {
           $limit: 25,
           $sort: {
             createdAt: -1
+          },
+          name: { // want to delete all users except myself
+            $nin: ['dylan']
           }
         }
       })
