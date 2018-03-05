@@ -19,6 +19,7 @@ export default {
       message: ""
     };
   },
+
   methods: {
     send() {
       this.$store.dispatch("sendMessage", this.message);

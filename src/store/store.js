@@ -29,7 +29,7 @@ export const store = new Vuex.Store({
     isAuthenticated: false,
     isConnecting: false,
     user: null,
-    messages: [],
+    messages: null,
     hasMoreMessages: false,
     //skip = 0,
   },
@@ -47,6 +47,9 @@ export const store = new Vuex.Store({
     setIsAuthenticated: (state, payload) => {
       state.isAuthenticated = payload
       console.log('setIsAuthenticated', state.isAuthenticated)
+    },
+    setMessages: (state, payload) => {
+      state.messages = payload
     }
 
   },
@@ -133,6 +136,25 @@ export const store = new Vuex.Store({
       }).then(users => console.log(users.data));
       // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
     },
+    async fetchMessages({
+      commit
+    }) {
+      //	Find	the	latest	25	messages.	They	will	come	with	the	newest	first
+      //	which	is	why	we	have	to	reverse	before	adding	them
+      const messages = await feathers.service('messages').find({
+        query: {
+          $sort: {
+            createdAt: -1
+          },
+          $limit: 25
+        }
+      });
+      //	We	want	to	show	the	newest	message	last
+      const orderedMessages = messages.data.reverse()
+      commit('setMessages', orderedMessages)
+      console.log('orderedMessages', orderedMessages)
+
+    },
     cleanUsers({
       commit
     }) {
@@ -149,6 +171,15 @@ export const store = new Vuex.Store({
       })
     },
     // TODO add messages actions
+    async sendMessage({
+      commit,
+      getters
+    }, payload) {
+      const sendMessage = await feathers.service('messages').create({
+        text: payload
+      });
+      console.log('sendMessage', sendMessage)
+    }
   },
   modules: {
     // Place to add modularized store items

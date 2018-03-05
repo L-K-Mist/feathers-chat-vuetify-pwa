@@ -14,6 +14,14 @@ import ComposeMessage from "./ComposeMessage";
 export default {
   components: {
     ComposeMessage
+  },
+  mounted() {
+    // this.$store.dispatch("fetchMessages");
+  },
+  computed: {
+    messages() {
+      return this.$store.getters.messages;
+    }
   }
 };
 </script>
