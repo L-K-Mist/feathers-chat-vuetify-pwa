@@ -138,7 +138,7 @@ export const store = new Vuex.Store({
     }) {
       feathers.service('users').remove(null, { // DANGEROUS ACTION: Deletes users from db
         query: {
-          $limit: 25,
+          $limit: 50,
           $sort: {
             createdAt: -1
           },
