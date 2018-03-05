@@ -15,7 +15,7 @@
                     <v-text-field
                     label="Password"
                     v-model="password"
-                    :rules="emailRules"
+                    :rules="passwordRules"
                     required
                     ></v-text-field>
                     <v-btn color='primary' type="submit">
@@ -48,8 +48,18 @@ export default {
       ]
     };
   },
+  computed: {
+    user() {
+      return {
+        email: this.email,
+        password: this.password
+      };
+    }
+  },
   methods: {
-    onLogin() {}
+    onLogin() {
+      this.$store.dispatch("signIn", this.user);
+    }
   }
 };
 </script>

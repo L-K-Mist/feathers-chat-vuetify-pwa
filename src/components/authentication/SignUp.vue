@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     onSignup() {
-      this.$store.dispatch("createUser", this.user);
+      this.$store.dispatch("signInManually", this.user);
     }
   }
 };

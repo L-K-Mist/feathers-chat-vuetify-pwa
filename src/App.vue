@@ -11,6 +11,9 @@
 
 <script>
 export default {
+  mounted() {
+    this.$store.dispatch("signInAuto");
+  },
   data() {
     return {
       fixed: false
