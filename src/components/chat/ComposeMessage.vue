@@ -22,6 +22,8 @@ export default {
   methods: {
     send() {
       this.$store.dispatch("sendMessage", this.message);
+      this.$store.dispatch("fetchMessages");
+      this.message = "";
     }
   }
 };

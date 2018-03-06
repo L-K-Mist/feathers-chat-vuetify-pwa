@@ -42,7 +42,7 @@ export default {
       this.$store.dispatch("logOut");
     },
     logUsers() {
-      this.$store.dispatch("logUsers");
+      this.$store.dispatch("fetchUsers");
     },
     cleanUsers() {
       this.$store.dispatch("cleanUsers");

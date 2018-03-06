@@ -1,8 +1,7 @@
 <template>
-<!-- taken directly from top example at https://next.vuetifyjs.com/en/components/lists -->
-    <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
+    <v-container>
         <v-card class="ma-4 scroll-y" style="max-height: 500px">
+
           <v-list two-line>
             <v-flex v-for="(message, index) in messages" :key="index">              
               <v-list-tile xs2  avatar>
@@ -15,10 +14,11 @@
               </v-list-tile>
             </v-flex>
           </v-list>
+
         </v-card>
         <compose-message></compose-message>
-      </v-flex>
-    </v-layout>
+    </v-container>
+
 </template>
 
 <script>

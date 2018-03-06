@@ -122,7 +122,7 @@ export const store = new Vuex.Store({
       }
     },
     // To just console log our users for now
-    logUsers({
+    fetchUsers({
       commit
     }) {
       //	Find	the	10	newest user accounts
