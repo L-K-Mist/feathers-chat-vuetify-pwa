@@ -28,18 +28,25 @@ export const store = new Vuex.Store({
     user: null,
     isAuthenticated: false,
     isConnecting: false,
-    user: null,
+    users: null,
     messages: null,
     hasMoreMessages: false,
     //skip = 0,
   },
   getters: {
-    getUser: state => {
+    user: state => {
       return state.user;
       console.log('Get User: ', state.user)
     },
+    users: state => {
+      return state.users;
+      console.log('Get User: ', state.users)
+    },
     messages: state => {
       return state.messages
+    },
+    isAuthenticated: state => {
+      return state.isAuthenticated
     }
     //getDialogueBool: state => state.dialogue,
   },
@@ -53,6 +60,9 @@ export const store = new Vuex.Store({
     },
     setMessages: (state, payload) => {
       state.messages = payload
+    },
+    setUsers: (state, payload) => {
+      state.users = payload
     }
 
   },
@@ -103,7 +113,7 @@ export const store = new Vuex.Store({
         const verifyExistingUser = await feathers.passport.verifyJWT(authExistingUser.accessToken)
         const fetchUser = await feathers.service('users').get(verifyExistingUser.userId)
         console.log('verifyExistingUser: ', verifyExistingUser.userId)
-        console.log('current user: ', fetchUser)
+        console.log('signInAuto user: ', fetchUser)
         commit('setUser', fetchUser)
         commit('setIsAuthenticated', true)
       } catch (error) {
@@ -122,23 +132,6 @@ export const store = new Vuex.Store({
       }
     },
     // To just console log our users for now
-    fetchUsers({
-      commit
-    }) {
-      //	Find	the	10	newest user accounts
-      feathers.service('users').find({
-        query: {
-          $limit: 50,
-          $sort: {
-            name: -1
-          },
-          // name: { // Just getting the log to exclude myself before cleaning up and deleting all except myself
-          //   $nin: ['dylan']
-          // }
-        }
-      }).then(users => console.log(users.data));
-      // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
-    },
     async fetchMessages({
       commit
     }) {
@@ -157,6 +150,22 @@ export const store = new Vuex.Store({
       commit('setMessages', orderedMessages)
       console.log('orderedMessages', orderedMessages)
 
+    },
+    async fetchUsers({
+      commit
+    }) {
+      //	Find	the	10	newest user accounts
+      const users = await feathers.service('users').find({
+        query: {
+          $limit: 25,
+          $sort: {
+            name: -1
+          },
+        }
+      });
+      commit('setUsers', users.data)
+      console.log('setUsers', users.data)
+      // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
     },
     cleanUsers({
       commit

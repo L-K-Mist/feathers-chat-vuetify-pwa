@@ -2,7 +2,8 @@
     <v-container>
         <v-card class="ma-4 scroll-y" style="max-height: 500px">
 
-          <v-list two-line>
+          <v-list subheader two-line>
+              <v-subheader>Recent Chat</v-subheader>
             <v-flex v-for="(message, index) in messages" :key="index">              
               <v-list-tile xs2  avatar>
                 <v-list-tile-avatar class="pa-0">
@@ -37,12 +38,12 @@ export default {
     messages() {
       return this.$store.getters.messages;
     }
-  },
-  watch: {
-    messages(value) {
-      console.log(value);
-    }
   }
+  //   watch: {
+  //     messages(value) {
+  //       console.log(value);
+  //     }
+  //   }
 };
 </script>
 
