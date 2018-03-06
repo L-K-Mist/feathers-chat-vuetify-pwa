@@ -24,6 +24,7 @@ export default {
     };
   },
   computed: {
+    // This watched computed property pattern is advised for async operations
     user() {
       return this.$store.getters.getUser;
     }
@@ -31,9 +32,9 @@ export default {
   watch: {
     user(value) {
       if (value !== null && value !== undefined) {
+        // Make sure there's an authenticated user
         this.showWelcome = true;
-        //const _user = this.$store.getters.user;
-        //this.username = _user.name;
+        this.$store.dispatch("fetchMessages"); // Now that we know there's an authenticated user, we can request messages from the database for our store. - BECAUSE - if we trigger a fetch before there's a logged in user, feathers throws an error.
       }
     }
   }
