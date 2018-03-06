@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-container class="ma-1">
       <v-layout row>
           <!-- <v-btn xs4>Send</v-btn> -->
-          <v-text-field xs8
+          <v-text-field 
           prepend-icon="send"
           :prepend-icon-cb="send"
           label="Compose Message"
@@ -19,7 +19,6 @@ export default {
       message: ""
     };
   },
-
   methods: {
     send() {
       this.$store.dispatch("sendMessage", this.message);

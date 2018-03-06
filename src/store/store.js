@@ -37,6 +37,9 @@ export const store = new Vuex.Store({
     getUser: state => {
       return state.user;
       console.log('Get User: ', state.user)
+    },
+    messages: state => {
+      return state.messages
     }
     //getDialogueBool: state => state.dialogue,
   },
