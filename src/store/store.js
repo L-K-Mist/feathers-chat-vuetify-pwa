@@ -18,8 +18,7 @@ const feathers = Feathers()
   }))
 
 
-import authentication from './modules/authentication'
-import chat from './modules/chat'
+import userGuide from './modules/userGuide'
 
 Vue.use(Vuex)
 
@@ -106,7 +105,8 @@ export const store = new Vuex.Store({
       }
     },
     async signInAuto({
-      commit
+      commit,
+      actions
     }) {
       try {
         const authExistingUser = await feathers.authenticate()
@@ -118,6 +118,7 @@ export const store = new Vuex.Store({
         commit('setIsAuthenticated', true)
       } catch (error) {
         console.log(error)
+        commit('showLoginGuide', true)
 
       }
     },
@@ -127,6 +128,8 @@ export const store = new Vuex.Store({
       try {
         const logout = await feathers.logout()
         console.log('logout ', logout)
+        commit('setUser', null)
+        commit('setIsAuthenticated', false)
       } catch (error) {
         console.log(error)
       }
@@ -195,6 +198,6 @@ export const store = new Vuex.Store({
   },
   modules: {
     // Place to add modularized store items
-    chat
+    userGuide
   }
 });

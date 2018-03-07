@@ -1,26 +1,26 @@
 const state = {
-  messages: []
+  showLoginGuide: false
 };
 
 const getters = {
-  getMessages: state => {
-    return state.messages;
+  showLoginGuide: state => {
+    return state.showLoginGuide;
   },
 };
 
 const mutations = {
   // Explicitly sets the state of isAuthenticated to true or false
-  setMessages: (state, payload) => {
-    state.messages = payload;
+  showLoginGuide: (state, payload) => {
+    state.showLoginGuide = payload;
   },
 };
 
 const actions = {
   // Dialogue actions
-  setMessages: ({
+  showLoginGuide: ({
     commit
   }, payload) => {
-    commit('setMessages', payload);
+    commit('showLoginGuide', payload);
   },
 };
 

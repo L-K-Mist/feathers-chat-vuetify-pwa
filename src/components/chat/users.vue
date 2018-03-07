@@ -1,5 +1,7 @@
 <template>
   <v-flex>
+    <v-layout fluid>
+
       <v-list subheader>
           <v-subheader>Online Users</v-subheader>
           <v-flex v-for="(user, index) in users" :key="index">
@@ -14,6 +16,15 @@
           </v-list-tile>
           </v-flex>
         </v-list>
+    </v-layout>
+        <v-spacer></v-spacer>
+
+                        <v-btn color="purple"
+                  @click.prevent="logOut">
+                  Log Out
+                </v-btn> 
+
+
   </v-flex>
 </template>
 
@@ -29,6 +40,12 @@ export default {
   computed: {
     users() {
       return this.$store.getters.users;
+    }
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch("logOut");
+      this.$router.replace({ name: "AppAuthentication" });
     }
   },
   // mounted() {

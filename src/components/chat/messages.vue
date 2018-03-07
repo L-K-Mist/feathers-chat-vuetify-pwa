@@ -38,12 +38,12 @@ export default {
     messages() {
       return this.$store.getters.messages;
     }
+  },
+  watch: {
+    messages(value) {
+      console.log(value);
+    }
   }
-  //   watch: {
-  //     messages(value) {
-  //       console.log(value);
-  //     }
-  //   }
 };
 </script>
 
