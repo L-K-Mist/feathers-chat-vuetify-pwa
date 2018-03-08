@@ -6,8 +6,8 @@
                 <h3>Authentication Component Wrapper</h3>
                 <!-- 3) PLACE the registered component into the template
                 notice: CamelCase becomes hyphenated-component -->
-                <log-in/>
-                <sign-up/> 
+                <log-in v-if="showLogin"/>
+                <sign-up v-if="showRegister"/> 
               </v-card>
               <v-layout row>
                 <v-btn color="purple"
@@ -34,8 +34,16 @@ import LogIn from "./LogIn"; // 1) IMPORT the File
 import SignUp from "./SignUp";
 
 export default {
-  data() {
-    return {};
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+    showRegister() {
+      return this.$store.getters.userRegister;
+    },
+    showLogin() {
+      return this.$store.getters.userLogin;
+    }
   },
   methods: {
     logOut() {
@@ -51,6 +59,13 @@ export default {
   components: {
     LogIn, // 2) REGISTER the Component
     SignUp
+  },
+  watch: {
+    isAuthenticated(value) {
+      if ((value = true)) {
+        this.$router.replace({ name: "AppChat" });
+      }
+    }
   }
 };
 // Notice: Both login and signup form placeholders are now visible, later will make visibility reactive

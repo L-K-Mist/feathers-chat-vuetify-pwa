@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+/** Because Feathers has been set up here, I try and implement all the feathers/database functionality here in the main store.
+ * All app-state not requiring async actions to the feathers server is placed in seperate vuex modules.
+ */
+
 
 // Include and set up feathers client
 import Feathers from '@feathersjs/client'
@@ -16,10 +20,13 @@ const feathers = Feathers()
   .configure(auth({
     storage: window.localStorage
   }))
+// Events are important for pushing changes accross the different clients. Keep in mind that each client has a separate store and state. ie Just because store.messages has a new message sent from one client does not mean that all clients are in sync. Each client must respond to this new event when it happens - hence the need and usefullness of events like this one.
+feathers.service('messages').on('created', message => {
+  console.log('Created	a	new	message', message);
+  store.dispatch('fetchMessages') // Notice that you usually dispatch actions in your components by using this.$store.dispatch('actionName', optionalPayload) - OR - inside your store using just dispatch('actionName', optionalPayload) - BUT - here you're neither inside the store below, nor in a component therefore you use store.dispatch('actionName', optionalPayload)
+});
 
-
-import authentication from './modules/authentication'
-import chat from './modules/chat'
+import userGuide from './modules/userGuide'
 
 Vue.use(Vuex)
 
@@ -28,18 +35,25 @@ export const store = new Vuex.Store({
     user: null,
     isAuthenticated: false,
     isConnecting: false,
-    user: null,
+    users: null,
     messages: null,
     hasMoreMessages: false,
     //skip = 0,
   },
   getters: {
-    getUser: state => {
+    user: state => {
       return state.user;
       console.log('Get User: ', state.user)
     },
+    users: state => {
+      return state.users;
+      console.log('Get User: ', state.users)
+    },
     messages: state => {
       return state.messages
+    },
+    isAuthenticated: state => {
+      return state.isAuthenticated
     }
     //getDialogueBool: state => state.dialogue,
   },
@@ -53,6 +67,9 @@ export const store = new Vuex.Store({
     },
     setMessages: (state, payload) => {
       state.messages = payload
+    },
+    setUsers: (state, payload) => {
+      state.users = payload
     }
 
   },
@@ -96,18 +113,20 @@ export const store = new Vuex.Store({
       }
     },
     async signInAuto({
-      commit
+      commit,
+      actions
     }) {
       try {
         const authExistingUser = await feathers.authenticate()
         const verifyExistingUser = await feathers.passport.verifyJWT(authExistingUser.accessToken)
         const fetchUser = await feathers.service('users').get(verifyExistingUser.userId)
         console.log('verifyExistingUser: ', verifyExistingUser.userId)
-        console.log('current user: ', fetchUser)
+        console.log('signInAuto user: ', fetchUser)
         commit('setUser', fetchUser)
         commit('setIsAuthenticated', true)
       } catch (error) {
         console.log(error)
+        commit('showLoginGuide', true)
 
       }
     },
@@ -117,28 +136,13 @@ export const store = new Vuex.Store({
       try {
         const logout = await feathers.logout()
         console.log('logout ', logout)
+        commit('setUser', null)
+        commit('setIsAuthenticated', false)
       } catch (error) {
         console.log(error)
       }
     },
     // To just console log our users for now
-    fetchUsers({
-      commit
-    }) {
-      //	Find	the	10	newest user accounts
-      feathers.service('users').find({
-        query: {
-          $limit: 50,
-          $sort: {
-            name: -1
-          },
-          // name: { // Just getting the log to exclude myself before cleaning up and deleting all except myself
-          //   $nin: ['dylan']
-          // }
-        }
-      }).then(users => console.log(users.data));
-      // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
-    },
     async fetchMessages({
       commit
     }) {
@@ -158,6 +162,22 @@ export const store = new Vuex.Store({
       console.log('orderedMessages', orderedMessages)
 
     },
+    async fetchUsers({
+      commit
+    }) {
+      //	Find	the	10	newest user accounts
+      const users = await feathers.service('users').find({
+        query: {
+          $limit: 25,
+          $sort: {
+            name: -1
+          },
+        }
+      });
+      commit('setUsers', users.data)
+      console.log('setUsers', users.data)
+      // TODO: play with this sorting so that able to clean users of all but 1st created user: ie. Yourself
+    },
     cleanUsers({
       commit
     }) {
@@ -176,16 +196,14 @@ export const store = new Vuex.Store({
     // TODO add messages actions
     async sendMessage({
       commit,
-      getters
     }, payload) {
       const sendMessage = await feathers.service('messages').create({
         text: payload
       });
-      console.log('sendMessage', sendMessage)
     }
   },
   modules: {
     // Place to add modularized store items
-    chat
+    userGuide
   }
 });

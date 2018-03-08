@@ -1,9 +1,11 @@
 <template>
     <v-container>
-        <v-card class="ma-4 scroll-y" style="max-height: 500px">
-
-          <v-list two-line>
-            <v-flex v-for="(message, index) in messages" :key="index">              
+      <div>
+        <v-card id="scroll-container" class="ma-4 scroll-y" style="max-height: 500px" >
+          <v-list subheader two-line>
+              <v-subheader>Recent Chat</v-subheader>
+            <v-flex  @mouseover="scrollToEnd" 
+                  v-for="(message, index) in messages" :key="index">              
               <v-list-tile xs2  avatar>
                 <v-list-tile-avatar class="pa-0">
                   <img :src="message.user.avatar">
@@ -14,8 +16,8 @@
               </v-list-tile>
             </v-flex>
           </v-list>
-
         </v-card>
+      </div>
         <compose-message></compose-message>
     </v-container>
 
@@ -27,9 +29,9 @@ export default {
   components: {
     ComposeMessage
   },
-  mounted() {
-    // this.$store.dispatch("fetchMessages");
-  },
+  // beforeUpdate() {
+  //   this.scrollToEnd();
+  // },
   data() {
     return {};
   },
@@ -38,9 +40,10 @@ export default {
       return this.$store.getters.messages;
     }
   },
-  watch: {
-    messages(value) {
-      console.log(value);
+  methods: {
+    scrollToEnd: function() {
+      var container = this.$el.querySelector("#scroll-container");
+      container.scrollTop = container.scrollHeight;
     }
   }
 };

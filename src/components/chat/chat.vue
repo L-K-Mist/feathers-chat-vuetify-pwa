@@ -1,15 +1,9 @@
 <template>
   <v-container>
       <v-card>
-        <v-layout row>
-            <v-layout>                
-                <app-users></app-users>
-            </v-layout>
-            <v-layout> 
-                <v-flex xs12 sm10>               
-                    <app-messages></app-messages>
-                </v-flex>
-            </v-layout>            
+        <v-layout row>         
+          <app-users></app-users>           
+          <app-messages></app-messages>
         </v-layout>
       </v-card>
   </v-container>
