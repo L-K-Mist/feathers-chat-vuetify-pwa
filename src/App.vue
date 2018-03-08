@@ -36,17 +36,22 @@
       <v-btn icon @click.stop="clipped = !clipped">
         <v-icon>web</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+      <v-toolbar-title  v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn  to="/">
+        <v-icon>home</v-icon>Home
+      </v-btn>
+      <v-btn  to="chat">
+        <v-icon>mail</v-icon>Chat
+      </v-btn>
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>menu</v-icon>
       </v-btn>
     </v-toolbar>
     <v-content>
-      <h3 v-if="showWelcome">Hello {{ user.name }}, welcome back</h3>
+      <h5 v-if="showWelcome" style="position: absolute; top: 80px; right: 20px">
+        Hello {{ user.name }}, welcome back
+      </h5>
         <transition name="scale-transition" mode="out-in">
             <router-view></router-view>
         </transition>
@@ -65,6 +70,11 @@
           </v-list-tile-action>
           <v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
         </v-list-tile>
+        <v-layout column align-center>
+          <v-flex xs10>
+            <p>You might decide to embed the chat component here instead</p>
+          </v-flex>
+        </v-layout>
       </v-list>
     </v-navigation-drawer>
     <v-footer :fixed="fixed" app>
@@ -101,7 +111,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: "Vuetify.js"
+      title: "A Vue & Vuetify PWA with Real Time Chat by FeathersJs"
     };
   },
   computed: {

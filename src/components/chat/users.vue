@@ -1,11 +1,9 @@
 <template>
   <v-flex>
-    <v-layout fluid>
-
+    <v-layout>
       <v-list subheader>
           <v-subheader>Online Users</v-subheader>
           <v-flex v-for="(user, index) in users" :key="index">
-
           <v-list-tile avatar>
             <v-list-tile-avatar>
               <img :src="user.avatar">
@@ -18,13 +16,10 @@
         </v-list>
     </v-layout>
         <v-spacer></v-spacer>
-
                         <v-btn color="purple"
                   @click.prevent="logOut">
                   Log Out
                 </v-btn> 
-
-
   </v-flex>
 </template>
 

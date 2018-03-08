@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+/** Because Feathers has been set up here, I try and implement all the feathers/database functionality here in the main store.
+ * All app-state not requiring async actions to the feathers server is placed in seperate vuex modules.
+ */
+
 
 // Include and set up feathers client
 import Feathers from '@feathersjs/client'
@@ -16,7 +20,11 @@ const feathers = Feathers()
   .configure(auth({
     storage: window.localStorage
   }))
-
+// Events are important for pushing changes accross the different clients. Keep in mind that each client has a separate store and state. ie Just because store.messages has a new message sent from one client does not mean that all clients are in sync. Each client must respond to this new event when it happens - hence the need and usefullness of events like this one.
+feathers.service('messages').on('created', message => {
+  console.log('Created	a	new	message', message);
+  store.dispatch('fetchMessages') // Notice that you usually dispatch actions in your components by using this.$store.dispatch('actionName', optionalPayload) - OR - inside your store using just dispatch('actionName', optionalPayload) - BUT - here you're neither inside the store below, nor in a component therefore you use store.dispatch('actionName', optionalPayload)
+});
 
 import userGuide from './modules/userGuide'
 
@@ -188,12 +196,10 @@ export const store = new Vuex.Store({
     // TODO add messages actions
     async sendMessage({
       commit,
-      getters
     }, payload) {
       const sendMessage = await feathers.service('messages').create({
         text: payload
       });
-      console.log('sendMessage', sendMessage)
     }
   },
   modules: {

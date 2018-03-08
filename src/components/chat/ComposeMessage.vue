@@ -4,6 +4,7 @@
           <!-- <v-btn xs4>Send</v-btn> -->
           <v-text-field 
           prepend-icon="send"
+          @keyup.enter="send"
           :prepend-icon-cb="send"
           label="Compose Message"
           v-model="message"
@@ -22,7 +23,7 @@ export default {
   methods: {
     send() {
       this.$store.dispatch("sendMessage", this.message);
-      this.$store.dispatch("fetchMessages");
+
       this.message = "";
     }
   }

@@ -3,8 +3,9 @@
     <v-slide-y-transition mode="out-in">
       <v-layout column align-center>
         <img src="@/assets/logo.png" alt="Vuetify.js" class="mb-5">
-        <blockquote>
-          What you're seeing here is the standard Vuetify pre-made template with PWA functionality.
+        <blockquote style="text-align: center">
+          What you're seeing here is the standard Vuetify pre-made template with PWA functionality. <br>
+          The real-time chat functionality comes courtesy of FeathersJs
         </blockquote>
       </v-layout>
     </v-slide-y-transition>
