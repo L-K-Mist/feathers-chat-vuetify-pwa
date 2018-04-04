@@ -84,13 +84,6 @@ Othertimes:
 
 ## Imagined FAQ 
 
-### What's PouchDB doing in there?
-
-I added PouchDB because I love it and the potential of Offline-First.
-eg. In the app I built from this repo: The machine state (temps and targets etc) was saved to the local pouch db every 30 seconds, for the sake of future analysis. 
-For struggling startups "on the make" it means you can split different parts of your app over different Free-Tier servers. ie GUI state is synced to CouchDB on [Cloudant](https://www.ibm.com/cloud/cloudant) Chat and perhaps your feathers services are hosted via [Zeit](https://zeit.co/). 
-
-
 ### Why is Feathers Chat not front-and-center like in the other examples
 
 To encourage fellow learners to play with feathers from this app, but keep the in-app chat as a side-feature.

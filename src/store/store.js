@@ -2,12 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import feathers from '@/api/feathers-client'
 import userGuide from './modules/userGuide'
-import db from '@/api/pouchDB'
-
-
-// db.remote.info().then(function (info) { // If and when you set up a cloudant account and db.    https://console.bluemix.net
-//   console.log(info);
-// })
 
 feathers.service('messages').on('created', value => {
   store.dispatch('pushHumanMessage', value) // Called this pushHumanMessage, because my own version also has arduino sending messages to clients.
